@@ -1,10 +1,14 @@
 package ika.library.config;
 
+import jakarta.servlet.DispatcherType;
 import jakarta.servlet.FilterRegistration;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+
+import java.util.EnumSet;
 
 public class MySpringMvcDispatcherServletInitilizer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
@@ -25,6 +29,7 @@ public class MySpringMvcDispatcherServletInitilizer extends AbstractAnnotationCo
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         super.onStartup(servletContext);
+        registerCharacterEncodingFilter(servletContext);
         registerHiddenFieldFilter(servletContext);
     }
 
@@ -34,5 +39,16 @@ public class MySpringMvcDispatcherServletInitilizer extends AbstractAnnotationCo
                 new HiddenHttpMethodFilter()
         );
         hiddenHttpMethodFilter.addMappingForUrlPatterns(null, true, "/*");
+    }
+
+    private void registerCharacterEncodingFilter(ServletContext aContext) {
+        EnumSet<DispatcherType> dispatcherTypes = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD);
+
+        CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+        characterEncodingFilter.setEncoding("UTF-8");
+        characterEncodingFilter.setForceEncoding(true);
+
+        FilterRegistration.Dynamic characterEncoding = aContext.addFilter("characterEncoding", characterEncodingFilter);
+        characterEncoding.addMappingForUrlPatterns(dispatcherTypes, true, "/*");
     }
 }
