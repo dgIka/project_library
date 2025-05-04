@@ -7,4 +7,5 @@
 <body>
 <h2>Привет мир</h2>
 </body>
+<a href="people">Список людей</a>
 </html>
