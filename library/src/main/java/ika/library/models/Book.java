@@ -7,6 +7,9 @@ public class Book {
     private String author;
     private int year;
 
+    public Book() {
+    }
+
     public Book(String title, String author, int year) {
         this.title = title;
         this.author = author;
