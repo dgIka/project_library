@@ -27,4 +27,11 @@ public class BookDAO {
                 new Object[] { id },
                 new BookMapper()).stream().findFirst().orElse(null);
     }
+
+    public void save(Book book) {
+        jdbcTemplate.update("INSERT INTO book(title, author, year) VALUES (?, ?, ?)",
+                book.getTitle(),
+                book.getAuthor(),
+                book.getYear());
+    }
 }
