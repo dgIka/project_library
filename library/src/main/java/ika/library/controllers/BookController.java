@@ -45,6 +45,12 @@ public class BookController {
         return "redirect:/books/" + id;
     }
 
+    @PatchMapping("/{id}/personId")
+    public String updatePersonId(@PathVariable("id") int id, @RequestParam("personId") int personId ) {
+        bookDAO.update(id, personId);
+        return "redirect:/books/" + id;
+    }
+
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") int id, Model model) {
         model.addAttribute("book", bookDAO.show(id));
