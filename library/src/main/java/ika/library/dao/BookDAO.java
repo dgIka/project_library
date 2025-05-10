@@ -23,7 +23,10 @@ public class BookDAO {
     }
 
     public Book show(int id) {
-        return jdbcTemplate.query("SELECT * FROM book WHERE book_id = ?",
+        return jdbcTemplate.query("SELECT book.*, person.name AS person_name FROM book "
+                + "LEFT JOIN person ON book.person_id = person.person_id"
+                + " WHERE book.book_id = ?"
+                ,
                 new Object[] { id },
                 new BookMapper()).stream().findFirst().orElse(null);
     }

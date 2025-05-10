@@ -6,6 +6,15 @@ public class Book {
     private String title;
     private String author;
     private int year;
+    private String personName;
+
+    public String getPersonName() {
+        return personName;
+    }
+
+    public void setPersonName(String personName) {
+        this.personName = personName;
+    }
 
     public Book() {
     }

@@ -5,10 +5,10 @@
     <title>Человек</title>
 </head>
 <body>
-<p th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYear}">VALUE</p>
+<p th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYear() + ', ' + book.getPersonId()}">VALUE</p>
 <p th:text="${'Держатель: ' +
     (book.personId != null && book.personId != 0 ?
-    book.personId : 'не назначен')}">
+    book.getPersonName : 'не назначен')}">
     VALUE
 </p>
 <form th:method="PATCH" th:action="@{/books/{id}/personId(id=${book.id})}">
