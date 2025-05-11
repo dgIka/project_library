@@ -1,6 +1,7 @@
 package ika.library.controllers;
 
 
+import ika.library.dao.BookDAO;
 import ika.library.dao.PersonDAO;
 
 import ika.library.models.Person;
@@ -12,9 +13,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/people")
 public class PeopleController {
     private final PersonDAO personDAO;
+    private final BookDAO bookDAO;
 
-    public PeopleController(PersonDAO personDAO) {
+    public PeopleController(PersonDAO personDAO, BookDAO bookDAO) {
         this.personDAO = personDAO;
+        this.bookDAO = bookDAO;
     }
 
     @GetMapping
@@ -26,6 +29,7 @@ public class PeopleController {
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
         model.addAttribute("person", personDAO.show(id));
+        model.addAttribute("books", bookDAO.showBooks(id));
         return "people/show";
     }
 

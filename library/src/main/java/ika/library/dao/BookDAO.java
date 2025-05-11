@@ -31,6 +31,11 @@ public class BookDAO {
                 new BookMapper()).stream().findFirst().orElse(null);
     }
 
+    public List<Book> showBooks(int id) {
+        return jdbcTemplate.query("SELECT * FROM book WHERE person_id = ?", new Object[] { id },
+                                    new BookMapper());
+    }
+
     public void save(Book book) {
         jdbcTemplate.update("INSERT INTO book(title, author, year) VALUES (?, ?, ?)",
                 book.getTitle(),

@@ -7,9 +7,17 @@
 <body>
 <p th:text="${person.getName() + ', ' + person.getBirthday()}">VALUE</p>
 <p th:text="${'id = ' + person.getId()}">VALUE</p>
+<br/>
+<div th:if="${books.empty}">
+  <p>У этого человека нет книг.</p>
+</div>
+<div th:each="book : ${books}">
+  <a th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYear}">user</a>
+</div>
 
 <a th:href="@{/people/{id}/edit(id=${person.getId()})}"> Edit</a>
 <br/>
+
 
 <hr/>
 <form th:method="DELETE" th:action="@{/people/{id}(id=${person.getId()})}">
