@@ -46,7 +46,7 @@ public class BookController {
     }
 
     @PatchMapping("/{id}/personId")
-    public String updatePersonId(@PathVariable("id") int id, @RequestParam("personId") int personId ) {
+    public String updatePersonId(@PathVariable("id") int id, @RequestParam(value = "personId", required = false) Integer personId ) {
         bookDAO.update(id, personId);
         return "redirect:/books/" + id;
     }

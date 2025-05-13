@@ -17,6 +17,11 @@
     </label>
     <input type="submit" value="Назначить"/>
 </form>
+<form th:method="PATCH" th:action="@{/books/{id}/personId(id=${book.id})}">
+    <input type="hidden" name="personId" value="" />
+    <button type="submit"> Освободить</button>
+</form>
+
 <br/>
 <a th:href="@{/books/{id}/edit(id=${book.getId()})}"> Edit</a>
 <br/>
