@@ -5,6 +5,7 @@ import ika.library.dao.BookDAO;
 import ika.library.dao.PersonDAO;
 import ika.library.models.Book;
 import ika.library.models.Person;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.ui.Model;
 
@@ -15,20 +16,36 @@ import static junit.framework.Assert.assertEquals;
 
 
 public class BookControllerTest {
-    private final SimpleModel simpleModel = new SimpleModel();
+    private SimpleModel simpleModel;
+    private BookDAO mockDAO;
+    private PersonDAO mockPersonDAO;
+    private BookController bookController;
 
-    @Test
-    void index_ShouldReturnViewAndAddBooksToModel() {
-        BookDAO mockDAO = new BookDAO(null) {
+    @BeforeEach
+    public void setUp() {
+        simpleModel = new SimpleModel();
+        mockDAO = new BookDAO(null) {
             @Override
             public List<Book> index() {
                 return Collections.singletonList(new Book("1984", "Оруэлл", 1949));
             }
+            @Override
+            public Book show(int id) {
+                return new Book("1984", "Оруэлл", 1949);
+            }
         };
-        BookController bookController = new BookController(mockDAO, null);
+        mockPersonDAO = new PersonDAO(null) {
+            @Override
+            public List<Person> index() {
+                return Collections.singletonList(new Person("Tom", LocalDate.of(1950, 1, 1)));
+            }
+        };
+        bookController = new BookController(mockDAO, mockPersonDAO);
+    }
 
+    @Test
+    void index_ShouldReturnViewAndAddBooksToModel() {
         String viewname = bookController.index(simpleModel);
-
         assertEquals("books/index", viewname);
         List<Book> books = (List<Book>) simpleModel.getAttribute("books");
         assertEquals(1, books.size());
@@ -38,22 +55,7 @@ public class BookControllerTest {
     }
      @Test
     void show_ShouldAddTwoAttributesAndReturnView() {
-        BookDAO mockDAO = new BookDAO(null) {
-            @Override
-            public Book show(int id) {
-                return new Book("1984", "Оруэлл", 1949);
-            }
-        };
-        PersonDAO mockPersonDAO = new PersonDAO(null) {
-            @Override
-            public List<Person> index() {
-                return Collections.singletonList(new Person("Tom", LocalDate.of(1950, 1, 1)));
-            }
-        };
-        BookController bookController = new BookController(mockDAO, mockPersonDAO);
-
         String viewname = bookController.show(0, simpleModel);
-
         assertEquals("books/show", viewname);
         Book book = (Book) simpleModel.getAttribute("book");
        List<Person> persons = (List<Person>) simpleModel.getAttribute("people");
@@ -62,3 +64,4 @@ public class BookControllerTest {
         assertEquals("Tom", persons.get(0).getName());
     }
 }
+
