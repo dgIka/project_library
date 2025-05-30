@@ -17,7 +17,6 @@ public class BookDAOTest {
     private JdbcTemplate jdbcTemplate;
     @BeforeEach
     void setUp() {
-        // Создаём БД в памяти с таблицами
         DataSource dataSource = new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.H2)
                 .setName("testdb;MODE=PostgreSQL")
@@ -43,5 +42,9 @@ public class BookDAOTest {
 
         Book savedBook = bookDAO.index().stream().filter(b -> b.getTitle().equals(book.getTitle())).findFirst().orElse(null);
         assertEquals("1985", savedBook.getTitle()); // Проверяем
+    }
+
+    void indexShouldShowAllBooks() {
+
     }
 }

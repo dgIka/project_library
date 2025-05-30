@@ -1,6 +1,6 @@
 package ika.library.models;
 
-public class Book {
+public class    Book {
     private int id;
     private int personId;
     private String title;
