@@ -32,19 +32,40 @@ public class BookDAOTest {
                         book.getAuthor(),
                         book.getYear());
             }
+            @Override
+            public void update(int id, Book book) {
+                jdbcTemplate.update("UPDATE book SET title = ?, author = ?, \"year\" = ? WHERE book_id = ?",
+                        book.getTitle(),
+                        book.getAuthor(),
+                        book.getYear(),
+                        id);
+
+            }
         };
     }
 
     @Test
     void save_ShouldInsertBook() {
         Book book = new Book("1985", "Оруэлл", 1949);
-        bookDAO.save(book); // Сохраняем в H2
+        bookDAO.save(book);
 
         Book savedBook = bookDAO.index().stream().filter(b -> b.getTitle().equals(book.getTitle())).findFirst().orElse(null);
-        assertEquals("1985", savedBook.getTitle()); // Проверяем
+        assertEquals("1985", savedBook.getTitle());
     }
 
     void indexShouldShowAllBooks() {
+
+    }
+
+    @Test
+    void update_ShouldUpdateBook() {
+        Book book = new Book("1985", "Оруэлл", 1949);
+        bookDAO.save(book);
+        Book renewBook = new Book("1986", "Оруэлл", 1949);
+        bookDAO.update(1, renewBook);
+
+        Book newBook = bookDAO.index().stream().filter(b -> b.getId() == 1).findFirst().orElse(null);
+        assertEquals("1986", newBook.getTitle());
 
     }
 }
