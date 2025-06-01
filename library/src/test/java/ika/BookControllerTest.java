@@ -24,16 +24,6 @@ public class BookControllerTest {
     @BeforeEach
     public void setUp() {
         simpleModel = new SimpleModel();
-        mockDAO = new BookDAO(null) {
-            @Override
-            public List<Book> index() {
-                return Collections.singletonList(new Book("1984", "Оруэлл", 1949));
-            }
-            @Override
-            public Book show(int id) {
-                return new Book("1984", "Оруэлл", 1949);
-            }
-        };
         mockPersonDAO = new PersonDAO(null) {
             @Override
             public List<Person> index() {
@@ -45,6 +35,12 @@ public class BookControllerTest {
 
     @Test
     void index_ShouldReturnViewAndAddBooksToModel() {
+        mockDAO = new BookDAO(null) {
+            @Override
+            public List<Book> index() {
+                return Collections.singletonList(new Book("1984", "Оруэлл", 1949));
+            }
+        };
         String viewname = bookController.index(simpleModel);
         assertEquals("books/index", viewname);
         List<Book> books = (List<Book>) simpleModel.getAttribute("books");
@@ -55,6 +51,16 @@ public class BookControllerTest {
     }
      @Test
     void show_ShouldAddTwoAttributesAndReturnView() {
+         mockDAO = new BookDAO(null) {
+             @Override
+             public List<Book> index() {
+                 return Collections.singletonList(new Book("1984", "Оруэлл", 1949));
+             }
+             @Override
+             public Book show(int id) {
+                 return new Book("1984", "Оруэлл", 1949);
+             }
+         };
         String viewname = bookController.show(0, simpleModel);
         assertEquals("books/show", viewname);
         Book book = (Book) simpleModel.getAttribute("book");
@@ -63,5 +69,7 @@ public class BookControllerTest {
         assertEquals(1, persons.size());
         assertEquals("Tom", persons.get(0).getName());
     }
+
+
 }
 
