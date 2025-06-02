@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 import static junit.framework.Assert.assertEquals;
+import static org.mockito.Mockito.*;
 
 
 public class BookControllerTest {
@@ -30,17 +31,31 @@ public class BookControllerTest {
                 return Collections.singletonList(new Person("Tom", LocalDate.of(1950, 1, 1)));
             }
         };
+        mockDAO = mock(BookDAO.class);
+        Book tempBook = new Book("1984", "Оруэлл", 1949);
+        doReturn(tempBook).when(mockDAO).show(0);
+        doReturn(Collections.singletonList(tempBook)).when(mockDAO).index();
+//        mockDAO = new BookDAO(null) {
+//            @Override
+//            public List<Book> index() {
+//                return Collections.singletonList(new Book("1984", "Оруэлл", 1949));
+//            }
+//            @Override
+//            public Book show(int id) {
+//                return new Book("1984", "Оруэлл", 1949);
+//            }
+//        };
         bookController = new BookController(mockDAO, mockPersonDAO);
     }
 
     @Test
     void index_ShouldReturnViewAndAddBooksToModel() {
-        mockDAO = new BookDAO(null) {
-            @Override
-            public List<Book> index() {
-                return Collections.singletonList(new Book("1984", "Оруэлл", 1949));
-            }
-        };
+//        mockDAO = new BookDAO(null) {
+//            @Override
+//            public List<Book> index() {
+//                return Collections.singletonList(new Book("1984", "Оруэлл", 1949));
+//            }
+//        };
         String viewname = bookController.index(simpleModel);
         assertEquals("books/index", viewname);
         List<Book> books = (List<Book>) simpleModel.getAttribute("books");
@@ -51,16 +66,12 @@ public class BookControllerTest {
     }
      @Test
     void show_ShouldAddTwoAttributesAndReturnView() {
-         mockDAO = new BookDAO(null) {
-             @Override
-             public List<Book> index() {
-                 return Collections.singletonList(new Book("1984", "Оруэлл", 1949));
-             }
-             @Override
-             public Book show(int id) {
-                 return new Book("1984", "Оруэлл", 1949);
-             }
-         };
+//         mockDAO = new BookDAO(null) {
+//             @Override
+//             public Book show(int id) {
+//                 return new Book("1984", "Оруэлл", 1949);
+//             }
+//         };
         String viewname = bookController.show(0, simpleModel);
         assertEquals("books/show", viewname);
         Book book = (Book) simpleModel.getAttribute("book");
