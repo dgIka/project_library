@@ -1,11 +1,20 @@
 package ika.library.models;
 
-public class    Book {
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+
+public class Book {
     private int id;
     private int personId;
+    @NotEmpty(message = "Не должно быть пустым")
+    @Size(min = 0, max = 30, message = "Should be between 0 and 30 characters")
     private String title;
+    @NotEmpty(message = "Не должно быть пустым")
+    @Size(min = 0, max = 30, message = "Should be between 0 and 30 characters")
     private String author;
     private int year;
+    @NotEmpty(message = "Не должно быть пустым")
+    @Size(min = 0, max = 30, message = "Should be between 0 and 30 characters")
     private String personName;
 
     public String getPersonName() {
