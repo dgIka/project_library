@@ -3,8 +3,10 @@ package ika.library.controllers;
 import ika.library.dao.BookDAO;
 import ika.library.dao.PersonDAO;
 import ika.library.models.Book;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -32,7 +34,8 @@ public class BookController {
     }
 
     @PostMapping
-    public String create(@ModelAttribute Book book) {
+    public String create(@ModelAttribute @Valid Book book, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) return "books/new";
         bookDAO.save(book);
         return "redirect:/books";
     }
@@ -44,7 +47,8 @@ public class BookController {
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute Book book, @PathVariable("id") int id) {
+    public String update(@ModelAttribute @Valid Book book, BindingResult bindingResult, @PathVariable("id") int id) {
+        if (bindingResult.hasErrors()) return "books/edit";
         bookDAO.update(id, book);
         return "redirect:/books/" + id;
     }
