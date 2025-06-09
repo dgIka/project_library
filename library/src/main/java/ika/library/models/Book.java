@@ -1,5 +1,6 @@
 package ika.library.models;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
@@ -12,6 +13,7 @@ public class Book {
     @NotEmpty(message = "Не должно быть пустым")
     @Size(min = 1, max = 30, message = "Should be between 1 and 30 characters")
     private String author;
+    @Min(value = 0, message = "Год не может быть отрицательным")
     private int year;
     @NotEmpty(message = "Не должно быть пустым")
     @Size(min = 1, max = 30, message = "Should be between 1 and 30 characters")
